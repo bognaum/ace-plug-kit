@@ -66,7 +66,7 @@ class PlugAce  {
 		wrapper.appendChild(el); 
 		el.classList.add("ace-plug-code-element");
 
-		var editor = el.editor = o.editor = ace.edit(el); // Создали редактор
+		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
 		wrapper.querySelector(".ace-plug-syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
