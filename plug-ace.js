@@ -68,6 +68,25 @@ class PlugAce  {
 
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
+		this._setEditor(editor, el, wrapper, o);
+
+		el.defaultPlugOptions = Object.assign({}, this.opts);
+		el.fCallPlugOptions   = uOpts;
+		el.currentPlugOptions = o;
+
+		return editor;
+
+		function getMode(syntaxMark="". o) {
+			for (var i in o.modeMarks) 
+				if (o.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
+					return i;
+			return syntaxMark;
+		}
+	}
+
+	static _setEditor (editor, el, wrapper, o) {
+		const self = this;
+
 		wrapper.querySelector(".ace-plug-syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
 		editor.setOption = 
@@ -145,18 +164,6 @@ class PlugAce  {
 		o.mode = o.editor.session.getMode().$id.split("/").pop();
 		this._setSyntaxMark (o) // Для инициализации.
 
-		el.defaultPlugOptions = Object.assign({}, this.opts);
-		el.fCallPlugOptions   = uOpts;
-		el.currentPlugOptions = o;
-
-		return editor;
-
-		function getMode(syntaxMark="") {
-			for (var i in o.modeMarks) 
-				if (o.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
-					return i;
-			return syntaxMark;
-		}
 
 		function afterOptionsDecor(result, ...args) {
 			// console.log(`afterOptionsDecor()`, result, args);
@@ -193,10 +200,6 @@ class PlugAce  {
 			})
 			return args;
 		}
-	}
-
-	static _setEditor (editor, o) {
-
 	}
 
 	static retabulate (el, defIndent=0, tabChar="\t") {
