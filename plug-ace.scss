@@ -1,0 +1,42 @@
+.ace-plug-code-wrapper {
+	margin: 25px 5px 15px 5px;
+	border: 1px solid #ccc; 
+	border-top-width: 1px;
+	font-size: 16px;
+	>.ace-plug-code-header {
+		$a : 1.2em;
+		>.ace-plug-file-name-wr {
+			font-family: consolas;
+			font-size: 16px;
+			height: $a;
+			margin-top: calc(#{-$a} - 1px);
+			>.f-name-tr {
+				display: inline-block;
+				>.f-name-block-el {
+					color: #333	;
+					display: inline-block;
+					font-weight: bold;
+					font-style: italic;
+					padding: 0px 20px;
+				}
+			}
+
+		}
+		>.ace-plug-syntax-mark {
+			font-size: 20px;
+			font-weight: bold;
+			font-family: verdana;
+			text-align: right;
+			display: block;
+			font-style: italic;
+			padding: 0 30px;
+			margin-top: -15px;
+			height: 1.2em;
+			cursor: pointer;
+		}
+		>.ace-plug-code-element {
+			position: relative;
+		}
+	}
+}
+
