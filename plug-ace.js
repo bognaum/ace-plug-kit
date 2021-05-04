@@ -4,6 +4,39 @@ class PlugAce  {
 		return "4.1.0";
 	}
 
+	static get editorOpts () {
+		this._editorOpts = this._editorOpts ||  {
+			fontSize                 : 16,
+			enableBasicAutocompletion: true,
+			enableSnippets           : true,
+			enableLiveAutocompletion : false,
+
+			enableEmmet              : true,
+			wrap                     : true,
+
+			highlightActiveLine      : false,
+
+			showPrintMargin          : false,
+			useSoftTabs              : false,
+			autoScrollEditorIntoView : true,
+			maxLines                 : 30,
+
+			showInvisibles           : true,
+			theme                    : "ace/theme/kuroir",
+		};
+		return this._editorOpts;
+	}
+
+	static get setOpts () {
+		this._setOpts = this._setOpts || {
+			modeMarks: this.modeMarks,
+			// theme    : "iplastic",
+			// maxLines : 30,
+		};
+
+		return this._setOpts;
+	}
+
 	static get modeMarks () {
 		this._modeMarks = this._modeMarks || {
 			batchfile  : "bat",
@@ -15,18 +48,7 @@ class PlugAce  {
 		return this._modeMarks;
 	}
 
-	static get setOpts () {
-		this._setOpts = this._setOpts || {
-			theme    : "iplastic",
-			maxLines : 30,
-			modeMarks: this.modeMarks,
-		};
-
-		return this._setOpts;
-	}
-
-	static plug (el, uOpts={}) {
-	static plug (el, setOpts={}) {
+	static plug (el, setOpts={}, editorOpts={}) {
 
 		el.dataset.plugAceVersion = this.version;
 
@@ -38,6 +60,11 @@ class PlugAce  {
 				this.setOpts,
 				setOpts,
 				ds,
+			),
+			edO = Object.assign(
+				{},
+				this.editorOpts,
+				editorOpts,
 			);
 		o.maxLines = parseInt(o.maxLines);
 		let
@@ -69,7 +96,7 @@ class PlugAce  {
 
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
-		this._setEditor(editor, el, wrapper, o);
+		this._setEditor(editor, el, wrapper, o, edO);
 
 		el.defaultPlugOptions = Object.assign({}, this.setOpts);
 		el.fCallPlugOptions   = setOpts;
@@ -85,7 +112,7 @@ class PlugAce  {
 		}
 	}
 
-	static _setEditor (editor, el, wrapper, o) {
+	static _setEditor (editor, el, wrapper, o, edO) {
 		const self = this;
 
 		wrapper.querySelector(".ace-plug-syntax-mark").onclick = () => {editor.showSettingsMenu()};
@@ -106,7 +133,7 @@ class PlugAce  {
 			this._decor(beforeThemeDecor, editor.renderer.setTheme, null, 
 				"editor.renderer.setTheme()"); // Задекорировать editor.renderer.setTheme
 
-		editor.setTheme("ace/theme/"+o.theme);
+		editor.setTheme(o.theme ? `ace/theme/${o.theme}` : editor.getTheme());
 
 		editor.session.on("changeMode", (e) => {
 			var modeId = editor.session.getMode().$id;
@@ -114,23 +141,14 @@ class PlugAce  {
 			this._setSyntaxMark (o);
 		}); // Показать на панели тип синтаксиса при его смене.
 
-		editor.setShowPrintMargin(false); // Убрать линию ограничения длинныстрок
-		editor.session.setUseSoftTabs(false); // Писать табы, как табы, а не пробелы
-		editor.setAutoScrollEditorIntoView(true); // ?
-		editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
+		// editor.setShowPrintMargin(false); // Убрать линию ограничения длинныстрок
+		// editor.session.setUseSoftTabs(false); // Писать табы, как табы, а не пробелы
+		// editor.setAutoScrollEditorIntoView(true); // ?
+		if (o.maxLines)
+			editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
 
 
-		editor.setOptions({
-			fontSize : 16,
-			enableBasicAutocompletion: true,
-			enableSnippets: true,
-			enableLiveAutocompletion: false,
-
-			enableEmmet : true,
-			wrap : true,
-
-			highlightActiveLine : false,
-		}); // Настройки.
+		editor.setOptions(edO); // Настройки.
 
 		editor.commands.addCommand({
 			name: "showKeyboardShortcuts",
