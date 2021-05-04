@@ -276,6 +276,7 @@ class PlugAce  {
 	static help () {
 		var helpStr = [
 			"",
+			"'Data-options' has priority over options that passed in constructor.",
 			"options:",
 			"        mode - the syntax too Ace editor. Setts in the ace canonical names.",
 			"      syntax - the syntax too Ace editor. Has priority over 'mode'.",
