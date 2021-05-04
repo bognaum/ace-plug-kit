@@ -17,49 +17,6 @@ class PlugAce  {
 
 	static plug (el, plugOptions={}) {
 
-		function getMode(syntaxMark="") {
-			for (var i in _.modes_marks) 
-				if (_.modes_marks[i].toLowerCase() == syntaxMark.toLowerCase()) 
-					return i;
-			return syntaxMark;
-		}
-
-		function afterOptionsDecor(result, ...args) {
-			// console.log(`afterOptionsDecor()`, result, args);
-		}
-
-		function beforeThemeDecor(...args) {
-			// console.log(`beforeThemeDecor()`, args);
-			// console.trace("decor_setTheme");
-			// console.log(`args[1]`, args[1]);
-			
-			// Вторым аргументом `args[1]` передаётся каллбек, который исполнится 
-			// после изменения темы. Его нужно задекорировать функцией, которая 
-			// пересветит метку синтаксиса.
-			args[1] = self._decor(null, (args[1] || function() {}), () => {
-				setTimeout(() => {
-					var cS = getComputedStyle(el);
-
-					wrapper.style.backgroundColor = cS.backgroundColor;
-					wrapper.style.color = (editor.renderer.theme.isDark)? "#fff" : "#aaa";
-					wrapper.querySelector(".ace-plug-syntax-mark").style.textShadow = `
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor},
-						0 0 10px ${cS.backgroundColor}
-					`;
-
-				})
-			})
-			return args;
-		}
-
 		el.dataset.plugAceVersion = this.version;
 
 		var 
@@ -210,6 +167,49 @@ class PlugAce  {
 		el.currentPlugOptions = _;
 
 		return editor;
+
+		function getMode(syntaxMark="") {
+			for (var i in _.modes_marks) 
+				if (_.modes_marks[i].toLowerCase() == syntaxMark.toLowerCase()) 
+					return i;
+			return syntaxMark;
+		}
+
+		function afterOptionsDecor(result, ...args) {
+			// console.log(`afterOptionsDecor()`, result, args);
+		}
+
+		function beforeThemeDecor(...args) {
+			// console.log(`beforeThemeDecor()`, args);
+			// console.trace("decor_setTheme");
+			// console.log(`args[1]`, args[1]);
+			
+			// Вторым аргументом `args[1]` передаётся каллбек, который исполнится 
+			// после изменения темы. Его нужно задекорировать функцией, которая 
+			// пересветит метку синтаксиса.
+			args[1] = self._decor(null, (args[1] || function() {}), () => {
+				setTimeout(() => {
+					var cS = getComputedStyle(el);
+
+					wrapper.style.backgroundColor = cS.backgroundColor;
+					wrapper.style.color = (editor.renderer.theme.isDark)? "#fff" : "#aaa";
+					wrapper.querySelector(".ace-plug-syntax-mark").style.textShadow = `
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor},
+						0 0 10px ${cS.backgroundColor}
+					`;
+
+				})
+			})
+			return args;
+		}
 	}
 
 	static retabulate (el, defIndent=0, tabChar="\t") {
