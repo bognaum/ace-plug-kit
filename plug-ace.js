@@ -22,14 +22,17 @@ class PlugAce  {
 		const 
 			self = this,
 			ds = el.dataset,
-			_ = Object.assign({ace: ace}, uOpts);
+			_ = Object.assign({
+				ace: ace,
+			}, uOpts);
+			// _ = Object.assign({ace: ace}, uOpts);
 		let
 			fNameHtml = "",
 			creator  = document.createElement("div");
 
 		_.modeMarks = Object.assign({}, this.modeMarks, _.modeMarks || {});
 
-		_.extension = _.extension || _.ext;
+		_.ext = _.ext || _.ext;
 		_.mode      = _.syntax    || _.mode || "";
 		_.theme     = _.theme     || _.th   || "iplastic";
 		_.fName     = "";
@@ -42,7 +45,7 @@ class PlugAce  {
 			if ("fileName" in ds)
 				ds.fName = ds.fileName;
 
-			_.extension  = ds.extension  || ds.ext     || _.extension;
+			_.ext  = ds.ext  || ds.ext     || _.ext;
 			_.maxLines   = ds.maxLines                 || _.maxLines || Infinity;
 			_.mode       = ds.syntax     || ds.mode    || _.mode;
 			_.syntaxMark = ds.syntaxMark               || _.syntaxMark; 
@@ -54,10 +57,10 @@ class PlugAce  {
 		_.mode  = getMode(_.mode);
 
 		if (!_.mode) {
-			if (_.fName && !_.extension)
+			if (_.fName && !_.ext)
 				this._setModeByPathname(_.fName, _);
-			if (_.extension)
-				this._setModeByPathname(_.extension, _);
+			if (_.ext)
+				this._setModeByPathname(_.ext, _);
 		}
 
 		if (_.syntaxMark && _.mode)
