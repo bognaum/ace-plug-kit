@@ -5,14 +5,24 @@ class PlugAce  {
 	}
 
 	static get modeMarks () {
-		this._modes_marks = this._modes_marks || {
+		this._modeMarks = this._modeMarks || {
 			batchfile  : "bat",
 			javascript : "js",
 			python     : "py",
 			text       : "txt",
 		};
 
-		return this._modes_marks;
+		return this._modeMarks;
+	}
+
+	static get opts () {
+		this._opts = this._opts || {
+			theme    : "iplastic",
+			maxLines : 30,
+			modeMarks: this.modeMarks,
+		};
+
+		return this._opts;
 	}
 
 	static plug (el, uOpts={}) {
@@ -22,73 +32,40 @@ class PlugAce  {
 		const 
 			self = this,
 			ds = el.dataset,
-			_ = Object.assign({
-				ace: ace,
-			}, uOpts);
-			// _ = Object.assign({ace: ace}, uOpts);
+			o = Object.assign(
+				{},
+				this.opts,
+				uOpts,
+				ds,
+			);
 		let
 			fNameHtml = "",
 			creator  = document.createElement("div");
 
-		_.modeMarks = Object.assign({}, this.modeMarks, _.modeMarks || {});
+		Object.assign(o.modeMarks, uOpts.modeMarks || {});
+		o.mode = getMode(o.syntax) || o.mode;
 
-		_.ext = _.ext || _.ext;
-		_.mode      = _.syntax    || _.mode || "";
-		_.theme     = _.theme     || _.th   || "iplastic";
-		_.fName     = "";
-
-		if (ds) {
-
-			if ("syntax" in ds)
-				ds.mode = ds.syntax || "";
-
-			if ("fileName" in ds)
-				ds.fName = ds.fileName;
-
-			_.ext  = ds.ext  || ds.ext     || _.ext;
-			_.maxLines   = ds.maxLines                 || _.maxLines || Infinity;
-			_.mode       = ds.syntax     || ds.mode    || _.mode;
-			_.syntaxMark = ds.syntaxMark               || _.syntaxMark; 
-			_.theme      = ds.theme      || ds.th      || _.theme;
-			_.url        = ds.url                      || _.url;
-			_.fName      = ds.fName      || "";
-		}
-
-		_.mode  = getMode(_.mode);
-
-		if (!_.mode) {
-			if (_.fName && !_.ext)
-				this._setModeByPathname(_.fName, _);
-			if (_.ext)
-				this._setModeByPathname(_.ext, _);
-		}
-
-		if (_.syntaxMark && _.mode)
-			_.modeMarks[_.mode] = _.syntaxMark;
-
-		if (_.fName)
+		if (o.fName)
 			fNameHtml = `
 				<div class="f-name-tr">
-					<div class="f-name-block-el">${_.fName}</div>
+					<div class="f-name-block-el">${o.fName}</div>
 				</div>
 			`;
 
-		creator.innerHTML = `
+		const wrapper = o.wrapper = this.eHTML(`
 			<div class="ace-plug-code-wrapper">
 				<div class="ace-plug-code-header">
 					<div class="ace-plug-file-name-wr">${fNameHtml}</div>
 					<div class="ace-plug-syntax-mark">${""}</div>
 				</div>
 			</div>
-		`;
-
-		var wrapper = _.wrapper = creator.children[0];
+		`);
 
 		el.parentElement.insertBefore(wrapper, el);
 		wrapper.appendChild(el); 
 		el.classList.add("ace-plug-code-element");
 
-		var editor = el.editor = _.editor = ace.edit(el); // Создали редактор
+		var editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
 		wrapper.querySelector(".ace-plug-syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
@@ -108,18 +85,18 @@ class PlugAce  {
 			this._decor(beforeThemeDecor, editor.renderer.setTheme, null, 
 				"editor.renderer.setTheme()"); // Задекорировать editor.renderer.setTheme
 
-		editor.setTheme("ace/theme/"+_.theme);
+		editor.setTheme("ace/theme/"+o.theme);
 
 		editor.session.on("changeMode", (e) => {
 			var modeId = editor.session.getMode().$id;
-			_.mode = modeId.split("/").pop();
-			this._setSyntaxMark (_);
+			o.mode = modeId.split("/").pop();
+			this._setSyntaxMark (o);
 		}); // Показать на панели тип синтаксиса при его смене.
 
 		editor.setShowPrintMargin(false); // Убрать линию ограничения длинныстрок
 		editor.session.setUseSoftTabs(false); // Писать табы, как табы, а не пробелы
 		editor.setAutoScrollEditorIntoView(true); // ?
-		editor.setOption("maxLines", _.maxLines); // Максимальное количество строк
+		editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
 
 
 		editor.setOptions({
@@ -158,23 +135,26 @@ class PlugAce  {
 		}]); // Добавить меню настроек
 
 
-		if (_.mode) 
-			editor.session.setMode("ace/mode/"+_.mode);
+		if (o.mode) 
+			editor.session.setMode("ace/mode/"+o.mode);
 
-		if (_.url) 
-			this._loadCode(_.url, _);
+		if (o.url) 
+			this._loadCode(o.url, o);
 
-		_.mode = _.editor.session.getMode().$id.split("/").pop();
-		this._setSyntaxMark (_) // Для инициализации.
+		o.mode = o.editor.session.getMode().$id.split("/").pop();
+		this._setSyntaxMark (o) // Для инициализации.
 
 		el.defaultPlugOptions = uOpts;
-		el.currentPlugOptions = _;
+		el.currentPlugOptions = o;
+
+		console.log(`o`, o);
+		console.log(`uOpts`, uOpts);
 
 		return editor;
 
 		function getMode(syntaxMark="") {
-			for (var i in _.modeMarks) 
-				if (_.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
+			for (var i in o.modeMarks) 
+				if (o.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
 					return i;
 			return syntaxMark;
 		}
@@ -299,7 +279,7 @@ class PlugAce  {
 		return helpStr;
 	}
 
-	static _loadCode (url, _) {
+	static _loadCode (url, o) {
 		var 
 			self = this,
 			xhr = new XMLHttpRequest();
@@ -312,10 +292,10 @@ class PlugAce  {
 			if (xhr.readyState != 4) 
 				return;
 			var pathname = xhr.getResponseHeader("Downloaded-file-pathname");
-			_.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
-			_.editor.session.setValue(xhr.responseText);
-			if (!_.mode)
-				self._setModeByPathname(_.mode || pathname || url, _);
+			o.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
+			o.editor.session.setValue(xhr.responseText);
+			if (!o.mode)
+				self._setModeByPathname(o.mode || pathname || url, o);
 		} // Асинхронно.
 
 		return true;
@@ -334,22 +314,31 @@ class PlugAce  {
 		}
 	}
 
-	static _setModeByPathname (pathname, _) {
+	static _setModeByPathname (pathname, o) {
 		ace.config.loadModule('ace/ext/modelist', (module) => {
 			var 
 				modelist  = ace.require("ace/ext/modelist"),
 				foundMode = modelist.getModeForPath(pathname).mode,
 				modeName  = foundMode.split("/").pop();
-			_.editor.session.setMode(foundMode);
-			_.mode = modeName;
-			if (_.syntaxMark)
-				_.modeMarks[modeName] = _.syntaxMark;
+			o.editor.session.setMode(foundMode);
+			o.mode = modeName;
+			if (o.syntaxMark)
+				o.modeMarks[modeName] = o.syntaxMark;
 		}); // Установить тип загружаемого файла, если файл загружается.
 	}
 
-	static _setSyntaxMark (_) {
-		_.wrapper.querySelector(".ace-plug-syntax-mark")
-				.textContent = _.modeMarks[_.mode] || _.mode;
+	static _setSyntaxMark (o) {
+		o.wrapper.querySelector(".ace-plug-syntax-mark")
+				.textContent = o.modeMarks[o.mode] || o.mode;
+	}
+	static eHTML (code, shell=null) {
+		const _shell = 
+			! shell                  ? document.createElement("div") :
+			typeof shell == "string" ? document.createElement(shell) :
+			typeof shell == "object" ? shell :
+				null;
+		_shell.innerHTML = code;
+		return _shell.children[0];
 	}
 }
 

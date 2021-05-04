@@ -24,57 +24,59 @@
 </head>
 <body>
 	<div class="container">
+
+
 		<h1>ace-plug-kit</h1>
 		<div class="ace-plug-js">
 			console.log("Hello world.");
 		</div>
+
+
 	</div>
 	<script type="text/javascript">
 		!function() {
 			document.querySelectorAll(".ace-plug").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30});
+				PlugAce.plug(v);
 			});
 			document.querySelectorAll(".ace-plug-file").forEach((v) => {
-				PlugAce.plug(v, {maxLines: 30});
+				PlugAce.plug(v);
 			});
 			document.querySelectorAll(".ace-plug-js").forEach((v) => {
 				PlugAce.retabulate(v);
 				PlugAce.plug(v, 
 					{
-						maxLines: 30,
 						syntax: "javascript", 
 						syntaxMark: "js",
 					});
 			});
 			document.querySelectorAll(".ace-plug-html").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30, syntax: "html"});
+				PlugAce.plug(v, {syntax: "html"});
 			});
 			document.querySelectorAll(".ace-plug-php").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30, syntax: "php"});
+				PlugAce.plug(v, {syntax: "php"});
 			});
 			document.querySelectorAll(".ace-plug-css").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30, syntax: "css"});
+				PlugAce.plug(v, {syntax: "css"});
 			});
 			document.querySelectorAll(".ace-plug-scss").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30, syntax: "scss"});
+				PlugAce.plug(v, {syntax: "scss"});
 			});
 			document.querySelectorAll(".ace-plug-py").forEach((v) => {
 				PlugAce.retabulate(v);
 				PlugAce.plug(v, 
 					{
-						maxLines: 30,
 						syntax: "python", 
 						syntaxMark: "py",
 					});
 			});
 			document.querySelectorAll(".ace-plug-text").forEach((v) => {
 				PlugAce.retabulate(v);
-				PlugAce.plug(v, {maxLines: 30, syntax: "text"});
+				PlugAce.plug(v, {syntax: "text"});
 			});
 		}();
 	</script>
