@@ -1,4 +1,4 @@
-class PlugAce  {
+class AcePlug  {
 
 	static get version () {
 		return "4.1.0";
