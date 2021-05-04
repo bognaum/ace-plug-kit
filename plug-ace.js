@@ -38,6 +38,7 @@ class PlugAce  {
 				uOpts,
 				ds,
 			);
+		o.maxLines = parseInt(o.maxLines);
 		let
 			fNameHtml = "",
 			creator  = document.createElement("div");
@@ -173,7 +174,7 @@ class PlugAce  {
 			// пересветит метку синтаксиса.
 			args[1] = self._decor(null, (args[1] || function() {}), () => {
 				setTimeout(() => {
-					var cS = getComputedStyle(el);
+					const cS = getComputedStyle(el);
 
 					wrapper.style.backgroundColor = cS.backgroundColor;
 					wrapper.style.color = (editor.renderer.theme.isDark)? "#fff" : "#aaa";
@@ -301,10 +302,11 @@ class PlugAce  {
 		return true;
 	}
 
-	static _decor (before, fn, after, logMark) {
+	static _decor (before, fn, after, logMark=null) {
 		return function(...args) {
 			// console.log(logMark);
-			var self = this, result;
+			const self = this;
+			let   result;
 			if (before)
 				args = before(...args);
 			result = fn.call(self, ...args);
