@@ -94,6 +94,8 @@ class AcePlug  {
 		wrapper.appendChild(el); 
 		el.classList.add("ace-plug__code-element");
 
+		this.setStyle();
+
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
 		this._setEditor(editor, el, wrapper, o, edO);
@@ -365,6 +367,60 @@ class AcePlug  {
 				null;
 		_shell.innerHTML = code;
 		return _shell.children[0];
+	}
+
+	static setStyle () {
+		const 
+			cssCode = `
+				.ace-plug__code-wrapper {
+				  margin: 25px 5px 15px 5px;
+				  border: 1px solid #ccc;
+				  border-top-width: 1px;
+				  font-size: 16px; }
+				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr {
+				    font-family: consolas;
+				    font-size: 16px;
+				    height: 1.2em;
+				    margin-top: calc(-1.2em - 1px); }
+				    .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr > .ace-plug__f-name-tr {
+				      display: inline-block; }
+				      .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr > .ace-plug__f-name-tr > .ace-plug__f-name-block-el {
+				        color: #333;
+				        display: inline-block;
+				        font-weight: bold;
+				        font-style: italic;
+				        padding: 0px 20px; }
+				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__syntax-mark {
+				    font-size: 20px;
+				    font-weight: bold;
+				    font-family: verdana;
+				    text-align: right;
+				    display: block;
+				    font-style: italic;
+				    padding: 0 30px;
+				    margin-top: -15px;
+				    height: 1.2em;
+				    cursor: pointer; }
+				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__code-element {
+				    position: relative; }
+			 `;
+
+		const styleClassName = `ace-plug__theme-style`;
+
+		const styleAlreadyExists = [].some.call(
+			document.querySelectorAll(`style.${styleClassName}`), 
+			(v) => v.textContent === cssCode
+		);
+
+		if (! styleAlreadyExists) {
+			const style = this.eHTML(`<style class="${styleClassName}"></style>`);
+			style.textContent = cssCode;
+			const firstEl = document.head.children[0];
+			if (firstEl)
+				document.head.insertBefore(style, firstEl);
+			else
+				document.head.appendChild(style);
+		}
 	}
 }
 
