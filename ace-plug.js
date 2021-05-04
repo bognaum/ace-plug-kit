@@ -76,8 +76,8 @@ class AcePlug  {
 
 		if (o.fName)
 			fNameHtml = `
-				<div class="f-name-tr">
-					<div class="f-name-block-el">${o.fName}</div>
+				<div class="ace-plug__f-name-tr">
+					<div class="ace-plug__f-name-block-el">${o.fName}</div>
 				</div>
 			`;
 

@@ -10,9 +10,9 @@
 			font-size: 16px;
 			height: $a;
 			margin-top: calc(#{-$a} - 1px);
-			>.f-name-tr {
+			>.ace-plug__f-name-tr {
 				display: inline-block;
-				>.f-name-block-el {
+				>.ace-plug__f-name-block-el {
 					color: #333	;
 					display: inline-block;
 					font-weight: bold;
