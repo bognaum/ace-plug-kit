@@ -15,59 +15,6 @@ class PlugAce  {
 		return this._modes_marks;
 	}
 
-	static _loadCode (url, _) {
-		var 
-			self = this,
-			xhr = new XMLHttpRequest();
-		xhr.open('POST', url, true);
-		xhr.addEventListener("readystatechange", xhrResponse, false);
-		xhr.setRequestHeader('Downloaded-file-host_pathname', location.host+location.pathname);
-		xhr.send();
-
-		function xhrResponse (e) {
-			if (xhr.readyState != 4) 
-				return;
-			var pathname = xhr.getResponseHeader("Downloaded-file-pathname");
-			_.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
-			_.editor.session.setValue(xhr.responseText);
-			if (!_.mode)
-				self._setModeByPathname(_.mode || pathname || url, _);
-		} // Асинхронно.
-
-		return true;
-	}
-
-	static _decor (before, fn, after, logMark) {
-		return function(...args) {
-			// console.log(logMark);
-			var self = this, result;
-			if (before)
-				args = before(...args);
-			result = fn.call(self, ...args);
-			if (after)
-				result = after(result, ...args);
-			return result;
-		}
-	}
-
-	static _setModeByPathname (pathname, _) {
-		ace.config.loadModule('ace/ext/modelist', (module) => {
-			var 
-				modelist  = ace.require("ace/ext/modelist"),
-				foundMode = modelist.getModeForPath(pathname).mode,
-				modeName  = foundMode.split("/").pop();
-			_.editor.session.setMode(foundMode);
-			_.mode = modeName;
-			if (_.syntaxMark)
-				_.modes_marks[modeName] = _.syntaxMark;
-		}); // Установить тип загружаемого файла, если файл загружается.
-	}
-
-	static _setSyntaxMark (_) {
-		_.wrapper.querySelector(".ace-plug-syntax-mark")
-				.textContent = _.modes_marks[_.mode] || _.mode;
-	}
-
 	static plug (el, plugOptions={}) {
 
 		function getMode(syntaxMark="") {
@@ -350,6 +297,59 @@ class PlugAce  {
 			"",
 		].join("\n");
 		return helpStr;
+	}
+
+	static _loadCode (url, _) {
+		var 
+			self = this,
+			xhr = new XMLHttpRequest();
+		xhr.open('POST', url, true);
+		xhr.addEventListener("readystatechange", xhrResponse, false);
+		xhr.setRequestHeader('Downloaded-file-host_pathname', location.host+location.pathname);
+		xhr.send();
+
+		function xhrResponse (e) {
+			if (xhr.readyState != 4) 
+				return;
+			var pathname = xhr.getResponseHeader("Downloaded-file-pathname");
+			_.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
+			_.editor.session.setValue(xhr.responseText);
+			if (!_.mode)
+				self._setModeByPathname(_.mode || pathname || url, _);
+		} // Асинхронно.
+
+		return true;
+	}
+
+	static _decor (before, fn, after, logMark) {
+		return function(...args) {
+			// console.log(logMark);
+			var self = this, result;
+			if (before)
+				args = before(...args);
+			result = fn.call(self, ...args);
+			if (after)
+				result = after(result, ...args);
+			return result;
+		}
+	}
+
+	static _setModeByPathname (pathname, _) {
+		ace.config.loadModule('ace/ext/modelist', (module) => {
+			var 
+				modelist  = ace.require("ace/ext/modelist"),
+				foundMode = modelist.getModeForPath(pathname).mode,
+				modeName  = foundMode.split("/").pop();
+			_.editor.session.setMode(foundMode);
+			_.mode = modeName;
+			if (_.syntaxMark)
+				_.modes_marks[modeName] = _.syntaxMark;
+		}); // Установить тип загружаемого файла, если файл загружается.
+	}
+
+	static _setSyntaxMark (_) {
+		_.wrapper.querySelector(".ace-plug-syntax-mark")
+				.textContent = _.modes_marks[_.mode] || _.mode;
 	}
 }
 
