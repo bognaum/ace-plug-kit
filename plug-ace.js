@@ -82,17 +82,17 @@ class PlugAce  {
 			`;
 
 		const wrapper = o.wrapper = this.eHTML(`
-			<div class="ace-plug-code-wrapper">
-				<div class="ace-plug-code-header">
-					<div class="ace-plug-file-name-wr">${fNameHtml}</div>
-					<div class="ace-plug-syntax-mark">${""}</div>
+			<div class="ace-plug__code-wrapper">
+				<div class="ace-plug__code-header">
+					<div class="ace-plug__file-name-wr">${fNameHtml}</div>
+					<div class="ace-plug__syntax-mark">${""}</div>
 				</div>
 			</div>
 		`);
 
 		el.parentElement.insertBefore(wrapper, el);
 		wrapper.appendChild(el); 
-		el.classList.add("ace-plug-code-element");
+		el.classList.add("ace-plug__code-element");
 
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
@@ -115,7 +115,7 @@ class PlugAce  {
 	static _setEditor (editor, el, wrapper, o, edO) {
 		const self = this;
 
-		wrapper.querySelector(".ace-plug-syntax-mark").onclick = () => {editor.showSettingsMenu()};
+		wrapper.querySelector(".ace-plug__syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
 		editor.setOption = 
 			this._decor(null, editor.setOption, afterOptionsDecor, 
@@ -202,7 +202,7 @@ class PlugAce  {
 
 					wrapper.style.backgroundColor = cS.backgroundColor;
 					wrapper.style.color = (editor.renderer.theme.isDark)? "#fff" : "#aaa";
-					wrapper.querySelector(".ace-plug-syntax-mark").style.textShadow = `
+					wrapper.querySelector(".ace-plug__syntax-mark").style.textShadow = `
 						0 0 10px ${cS.backgroundColor},
 						0 0 10px ${cS.backgroundColor},
 						0 0 10px ${cS.backgroundColor},
@@ -354,7 +354,7 @@ class PlugAce  {
 	}
 
 	static _setSyntaxMark (o) {
-		o.wrapper.querySelector(".ace-plug-syntax-mark")
+		o.wrapper.querySelector(".ace-plug__syntax-mark")
 				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
 	static eHTML (code, shell=null) {

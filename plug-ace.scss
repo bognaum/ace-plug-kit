@@ -1,11 +1,11 @@
-.ace-plug-code-wrapper {
+.ace-plug__code-wrapper {
 	margin: 25px 5px 15px 5px;
 	border: 1px solid #ccc; 
 	border-top-width: 1px;
 	font-size: 16px;
-	>.ace-plug-code-header {
+	>.ace-plug__code-header {
 		$a : 1.2em;
-		>.ace-plug-file-name-wr {
+		>.ace-plug__file-name-wr {
 			font-family: consolas;
 			font-size: 16px;
 			height: $a;
@@ -22,7 +22,7 @@
 			}
 
 		}
-		>.ace-plug-syntax-mark {
+		>.ace-plug__syntax-mark {
 			font-size: 20px;
 			font-weight: bold;
 			font-family: verdana;
@@ -34,7 +34,7 @@
 			height: 1.2em;
 			cursor: pointer;
 		}
-		>.ace-plug-code-element {
+		>.ace-plug__code-element {
 			position: relative;
 		}
 	}
