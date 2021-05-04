@@ -4,7 +4,7 @@ class PlugAce  {
 		return "4.1.0";
 	}
 
-	static get modes_marks () {
+	static get modeMarks () {
 		this._modes_marks = this._modes_marks || {
 			batchfile  : "bat",
 			javascript : "js",
@@ -15,18 +15,19 @@ class PlugAce  {
 		return this._modes_marks;
 	}
 
-	static plug (el, plugOptions={}) {
+	static plug (el, uOpts={}) {
 
 		el.dataset.plugAceVersion = this.version;
 
-		var 
+		const 
 			self = this,
-			_ = Object.assign({ace: ace}, plugOptions),
 			ds = el.dataset,
+			_ = Object.assign({ace: ace}, uOpts);
+		let
 			fNameHtml = "",
 			creator  = document.createElement("div");
 
-		_.modes_marks = Object.assign({}, this.modes_marks, _.modes_marks || {});
+		_.modeMarks = Object.assign({}, this.modeMarks, _.modeMarks || {});
 
 		_.extension = _.extension || _.ext;
 		_.mode      = _.syntax    || _.mode || "";
@@ -60,7 +61,7 @@ class PlugAce  {
 		}
 
 		if (_.syntaxMark && _.mode)
-			_.modes_marks[_.mode] = _.syntaxMark;
+			_.modeMarks[_.mode] = _.syntaxMark;
 
 		if (_.fName)
 			fNameHtml = `
@@ -163,14 +164,14 @@ class PlugAce  {
 		_.mode = _.editor.session.getMode().$id.split("/").pop();
 		this._setSyntaxMark (_) // Для инициализации.
 
-		el.defaultPlugOptions = plugOptions;
+		el.defaultPlugOptions = uOpts;
 		el.currentPlugOptions = _;
 
 		return editor;
 
 		function getMode(syntaxMark="") {
-			for (var i in _.modes_marks) 
-				if (_.modes_marks[i].toLowerCase() == syntaxMark.toLowerCase()) 
+			for (var i in _.modeMarks) 
+				if (_.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
 					return i;
 			return syntaxMark;
 		}
@@ -343,13 +344,13 @@ class PlugAce  {
 			_.editor.session.setMode(foundMode);
 			_.mode = modeName;
 			if (_.syntaxMark)
-				_.modes_marks[modeName] = _.syntaxMark;
+				_.modeMarks[modeName] = _.syntaxMark;
 		}); // Установить тип загружаемого файла, если файл загружается.
 	}
 
 	static _setSyntaxMark (_) {
 		_.wrapper.querySelector(".ace-plug-syntax-mark")
-				.textContent = _.modes_marks[_.mode] || _.mode;
+				.textContent = _.modeMarks[_.mode] || _.mode;
 	}
 }
 
