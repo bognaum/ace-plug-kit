@@ -145,11 +145,9 @@ class PlugAce  {
 		o.mode = o.editor.session.getMode().$id.split("/").pop();
 		this._setSyntaxMark (o) // Для инициализации.
 
-		el.defaultPlugOptions = uOpts;
+		el.defaultPlugOptions = Object.assign({}, this.opts);
+		el.fCallPlugOptions   = uOpts;
 		el.currentPlugOptions = o;
-
-		console.log(`o`, o);
-		console.log(`uOpts`, uOpts);
 
 		return editor;
 
@@ -195,6 +193,10 @@ class PlugAce  {
 			})
 			return args;
 		}
+	}
+
+	static _setEditor (editor, o) {
+
 	}
 
 	static retabulate (el, defIndent=0, tabChar="\t") {
