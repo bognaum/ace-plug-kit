@@ -15,17 +15,18 @@ class PlugAce  {
 		return this._modeMarks;
 	}
 
-	static get opts () {
-		this._opts = this._opts || {
+	static get setOpts () {
+		this._setOpts = this._setOpts || {
 			theme    : "iplastic",
 			maxLines : 30,
 			modeMarks: this.modeMarks,
 		};
 
-		return this._opts;
+		return this._setOpts;
 	}
 
 	static plug (el, uOpts={}) {
+	static plug (el, setOpts={}) {
 
 		el.dataset.plugAceVersion = this.version;
 
@@ -34,8 +35,8 @@ class PlugAce  {
 			ds = el.dataset,
 			o = Object.assign(
 				{},
-				this.opts,
-				uOpts,
+				this.setOpts,
+				setOpts,
 				ds,
 			);
 		o.maxLines = parseInt(o.maxLines);
@@ -43,7 +44,7 @@ class PlugAce  {
 			fNameHtml = "",
 			creator  = document.createElement("div");
 
-		Object.assign(o.modeMarks, uOpts.modeMarks || {});
+		Object.assign(o.modeMarks, setOpts.modeMarks || {});
 		o.mode = getMode(o.syntax) || o.mode;
 
 		if (o.fName)
@@ -70,8 +71,8 @@ class PlugAce  {
 
 		this._setEditor(editor, el, wrapper, o);
 
-		el.defaultPlugOptions = Object.assign({}, this.opts);
-		el.fCallPlugOptions   = uOpts;
+		el.defaultPlugOptions = Object.assign({}, this.setOpts);
+		el.fCallPlugOptions   = setOpts;
 		el.currentPlugOptions = o;
 
 		return editor;
