@@ -331,7 +331,7 @@ class PlugAce  {
 
 	static _setSyntaxMark (o) {
 		o.wrapper.querySelector(".ace-plug-syntax-mark")
-				.textContent = o.modeMarks[o.mode] || o.mode;
+				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
 	static eHTML (code, shell=null) {
 		const _shell = 
