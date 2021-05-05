@@ -39,14 +39,18 @@
 
 		});
 
+	
 
 
-	window.acePK = {
+
+	const API = window.acePK = {
 		version,
 		default: _default_,
 		help,
 		plug,
 		retabulate,
+		getThemes,
+		themesToConsole,
 	};
 
 	return;
@@ -364,6 +368,7 @@
 		o.wrapper.querySelector(".ace-plug-kit__syntax-mark")
 				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
+	
 	function eHTML (code, shell=null) {
 		const _shell = 
 			! shell                  ? document.createElement("div") :
@@ -425,6 +430,21 @@
 				document.head.insertBefore(style, firstEl);
 			else
 				document.head.appendChild(style);
+		}
+	}
+
+	function themesToConsole() {
+		getThemes().then(console.log);
+	}
+
+	async function getThemes() {
+		const module = await new Promise((rsl) => {
+			ace.config.loadModule('ace/ext/themelist', rsl);
+		});
+		return {
+			all  : module.themes.map(v => v.name),
+			dark : module.themes.filter(v =>  v.isDark).map(v => v.name),
+			light: module.themes.filter(v => !v.isDark).map(v => v.name),
 		}
 	}
 
