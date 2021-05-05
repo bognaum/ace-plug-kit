@@ -1,18 +1,18 @@
-.ace-plug__code-wrapper {
+.ace-plug-kit__code-wrapper {
 	margin: 25px 5px 15px 5px;
 	border: 1px solid #ccc; 
 	border-top-width: 1px;
 	font-size: 16px;
-	>.ace-plug__code-header {
+	>.ace-plug-kit__code-header {
 		$a : 1.2em;
-		>.ace-plug__file-name-wr {
+		>.ace-plug-kit__file-name-wr {
 			font-family: consolas;
 			font-size: 16px;
 			height: $a;
 			margin-top: calc(#{-$a} - 1px);
-			>.ace-plug__f-name-tr {
+			>.ace-plug-kit__f-name-tr {
 				display: inline-block;
-				>.ace-plug__f-name-block-el {
+				>.ace-plug-kit__f-name-block-el {
 					color: #333	;
 					display: inline-block;
 					font-weight: bold;
@@ -22,7 +22,7 @@
 			}
 
 		}
-		>.ace-plug__syntax-mark {
+		>.ace-plug-kit__syntax-mark {
 			font-size: 20px;
 			font-weight: bold;
 			font-family: verdana;
@@ -34,7 +34,7 @@
 			height: 1.2em;
 			cursor: pointer;
 		}
-		>.ace-plug__code-element {
+		>.ace-plug-kit__code-element {
 			position: relative;
 		}
 	}

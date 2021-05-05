@@ -1,4 +1,4 @@
-class AcePlug  {
+class AcePK  {
 
 	static get version () {
 		return "4.1.0";
@@ -76,23 +76,23 @@ class AcePlug  {
 
 		if (o.fName)
 			fNameHtml = `
-				<div class="ace-plug__f-name-tr">
-					<div class="ace-plug__f-name-block-el">${o.fName}</div>
+				<div class="ace-plug-kit__f-name-tr">
+					<div class="ace-plug-kit__f-name-block-el">${o.fName}</div>
 				</div>
 			`;
 
 		const wrapper = o.wrapper = this.eHTML(`
-			<div class="ace-plug__code-wrapper">
-				<div class="ace-plug__code-header">
-					<div class="ace-plug__file-name-wr">${fNameHtml}</div>
-					<div class="ace-plug__syntax-mark">${""}</div>
+			<div class="ace-plug-kit__code-wrapper">
+				<div class="ace-plug-kit__code-header">
+					<div class="ace-plug-kit__file-name-wr">${fNameHtml}</div>
+					<div class="ace-plug-kit__syntax-mark">${""}</div>
 				</div>
 			</div>
 		`);
 
 		el.parentElement.insertBefore(wrapper, el);
 		wrapper.appendChild(el); 
-		el.classList.add("ace-plug__code-element");
+		el.classList.add("ace-plug-kit__code-element");
 
 		this.setStyle();
 
@@ -117,7 +117,7 @@ class AcePlug  {
 	static _setEditor (editor, el, wrapper, o, edO) {
 		const self = this;
 
-		wrapper.querySelector(".ace-plug__syntax-mark").onclick = () => {editor.showSettingsMenu()};
+		wrapper.querySelector(".ace-plug-kit__syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
 		editor.setOption = 
 			this._decor(null, editor.setOption, afterOptionsDecor, 
@@ -204,7 +204,7 @@ class AcePlug  {
 
 					wrapper.style.backgroundColor = cS.backgroundColor;
 					wrapper.style.color = (editor.renderer.theme.isDark)? "#fff" : "#aaa";
-					wrapper.querySelector(".ace-plug__syntax-mark").style.textShadow = `
+					wrapper.querySelector(".ace-plug-kit__syntax-mark").style.textShadow = `
 						0 0 10px ${cS.backgroundColor},
 						0 0 10px ${cS.backgroundColor},
 						0 0 10px ${cS.backgroundColor},
@@ -356,7 +356,7 @@ class AcePlug  {
 	}
 
 	static _setSyntaxMark (o) {
-		o.wrapper.querySelector(".ace-plug__syntax-mark")
+		o.wrapper.querySelector(".ace-plug-kit__syntax-mark")
 				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
 	static eHTML (code, shell=null) {
@@ -372,25 +372,25 @@ class AcePlug  {
 	static setStyle () {
 		const 
 			cssCode = `
-				.ace-plug__code-wrapper {
+				.ace-plug-kit__code-wrapper {
 				  margin: 25px 5px 15px 5px;
 				  border: 1px solid #ccc;
 				  border-top-width: 1px;
 				  font-size: 16px; }
-				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr {
+				  .ace-plug-kit__code-wrapper > .ace-plug-kit__code-header > .ace-plug-kit__file-name-wr {
 				    font-family: consolas;
 				    font-size: 16px;
 				    height: 1.2em;
 				    margin-top: calc(-1.2em - 1px); }
-				    .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr > .ace-plug__f-name-tr {
+				    .ace-plug-kit__code-wrapper > .ace-plug-kit__code-header > .ace-plug-kit__file-name-wr > .ace-plug-kit__f-name-tr {
 				      display: inline-block; }
-				      .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__file-name-wr > .ace-plug__f-name-tr > .ace-plug__f-name-block-el {
+				      .ace-plug-kit__code-wrapper > .ace-plug-kit__code-header > .ace-plug-kit__file-name-wr > .ace-plug-kit__f-name-tr > .ace-plug-kit__f-name-block-el {
 				        color: #333;
 				        display: inline-block;
 				        font-weight: bold;
 				        font-style: italic;
 				        padding: 0px 20px; }
-				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__syntax-mark {
+				  .ace-plug-kit__code-wrapper > .ace-plug-kit__code-header > .ace-plug-kit__syntax-mark {
 				    font-size: 20px;
 				    font-weight: bold;
 				    font-family: verdana;
@@ -401,11 +401,11 @@ class AcePlug  {
 				    margin-top: -15px;
 				    height: 1.2em;
 				    cursor: pointer; }
-				  .ace-plug__code-wrapper > .ace-plug__code-header > .ace-plug__code-element {
+				  .ace-plug-kit__code-wrapper > .ace-plug-kit__code-header > .ace-plug-kit__code-element {
 				    position: relative; }
 			 `;
 
-		const styleClassName = `ace-plug__theme-style`;
+		const styleClassName = `ace-plug-kit__theme-style`;
 
 		const styleAlreadyExists = [].some.call(
 			document.querySelectorAll(`style.${styleClassName}`), 

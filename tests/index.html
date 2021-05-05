@@ -8,8 +8,8 @@
 	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-language_tools.js"></script>
 	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-emmet.js"></script>
 	<script type="text/javascript" src="./../Ace-Emmet/emmet.js"></script>
-	<script type="text/javascript" src="./../ace-plug.js"></script>
-	<!-- <link rel="stylesheet" href="./../ace-plug.css"> -->
+	<script type="text/javascript" src="./../ace-plug-kit.js"></script>
+	<!-- <link rel="stylesheet" href="./../ace-plug-kit.css"> -->
 
 	<style>
 		body>.container {
@@ -31,7 +31,7 @@
 			console.log("Hello world.");
 		</div>
 
-		<div class="ace-plug-js" data-url="./../ace-plug.js">
+		<div class="ace-plug-js" data-url="./../ace-plug-kit.js">
 			console.log("Hello world.");
 		</div>
 
@@ -40,39 +40,39 @@
 	<script type="text/javascript">
 		!function() {
 			document.querySelectorAll(".ace-plug").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v);
+				AcePK.retabulate(v);
+				AcePK.plug(v);
 			});
 			document.querySelectorAll(".ace-plug-file").forEach((v) => {
-				AcePlug.plug(v);
+				AcePK.plug(v);
 			});
 			document.querySelectorAll(".ace-plug-js").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "javascript", });
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "javascript", });
 			});
 			document.querySelectorAll(".ace-plug-html").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "html"});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "html"});
 			});
 			document.querySelectorAll(".ace-plug-php").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "php"});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "php"});
 			});
 			document.querySelectorAll(".ace-plug-css").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "css"});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "css"});
 			});
 			document.querySelectorAll(".ace-plug-scss").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "scss"});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "scss"});
 			});
 			document.querySelectorAll(".ace-plug-py").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "python",});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "python",});
 			});
 			document.querySelectorAll(".ace-plug-text").forEach((v) => {
-				AcePlug.retabulate(v);
-				AcePlug.plug(v, {syntax: "text"});
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "text"});
 			});
 		}();
 	</script>
