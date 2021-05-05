@@ -310,7 +310,7 @@ class AcePlug  {
 		var 
 			self = this,
 			xhr = new XMLHttpRequest();
-		xhr.open('POST', url, true);
+		xhr.open('GET', url, true);
 		xhr.addEventListener("readystatechange", xhrResponse, false);
 		xhr.setRequestHeader('Downloaded-file-host_pathname', location.host+location.pathname);
 		xhr.send();
