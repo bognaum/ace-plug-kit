@@ -161,23 +161,6 @@ class AcePK  {
 			this._decor(beforeThemeDecor, editor.renderer.setTheme, null, 
 				"editor.renderer.setTheme()"); // Задекорировать editor.renderer.setTheme
 
-		editor.setTheme(o.theme ? `ace/theme/${o.theme}` : editor.getTheme());
-
-		editor.session.on("changeMode", (e) => {
-			var modeId = editor.session.getMode().$id;
-			o.mode = modeId.split("/").pop();
-			this._setSyntaxMark (o);
-		}); // Показать на панели тип синтаксиса при его смене.
-
-		// editor.setShowPrintMargin(false); // Убрать линию ограничения длинныстрок
-		// editor.session.setUseSoftTabs(false); // Писать табы, как табы, а не пробелы
-		// editor.setAutoScrollEditorIntoView(true); // ?
-		if (o.maxLines)
-			editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
-
-
-		editor.setOptions(edO); // Настройки.
-
 		editor.commands.addCommand({
 			name: "showKeyboardShortcuts",
 			bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
@@ -202,6 +185,21 @@ class AcePK  {
 		}]); // Добавить меню настроек
 
 
+
+
+		editor.setOptions(edO); // Настройки.
+
+		editor.setTheme(o.theme ? `ace/theme/${o.theme}` : editor.getTheme());
+
+		editor.session.on("changeMode", (e) => {
+			var modeId = editor.session.getMode().$id;
+			o.mode = modeId.split("/").pop();
+			this._setSyntaxMark (o);
+		}); // Показать на панели тип синтаксиса при его смене.
+
+		if (o.maxLines)
+			editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
+
 		if (o.mode) 
 			editor.session.setMode("ace/mode/"+o.mode);
 
@@ -211,6 +209,7 @@ class AcePK  {
 		o.mode = o.editor.session.getMode().$id.split("/").pop();
 		this._setSyntaxMark (o) // Для инициализации.
 
+		return;
 
 		function afterOptionsDecor(result, ...args) {
 			// console.log(`afterOptionsDecor()`, result, args);
