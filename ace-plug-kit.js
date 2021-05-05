@@ -1,6 +1,6 @@
 (function () {
 	const 
-		version = "6.0.0",
+		version = "6.1.0",
 
 		_default_ = Object.defineProperties({}, {
 
@@ -368,7 +368,7 @@
 		o.wrapper.querySelector(".ace-plug-kit__syntax-mark")
 				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
-	
+
 	function eHTML (code, shell=null) {
 		const _shell = 
 			! shell                  ? document.createElement("div") :
