@@ -1,11 +1,58 @@
-class AcePK  {
+(function () {
+	const 
+		version = "6.0.0",
 
-	static get version () {
-		return "5.0.2";
-	}
+		_default_ = Object.defineProperties({}, {
 
-	static help () {
-		var helpStr = [
+			editorOpts: { value: {
+				fontSize                 : 16,
+				enableBasicAutocompletion: true,
+				enableSnippets           : true,
+				enableLiveAutocompletion : false,
+
+				enableEmmet              : true,
+				wrap                     : true,
+
+				highlightActiveLine      : false,
+
+				showPrintMargin          : false,
+				useSoftTabs              : false,
+				autoScrollEditorIntoView : true,
+				maxLines                 : 30,
+
+				showInvisibles           : true,
+				theme                    : "ace/theme/kuroir",
+			}},
+
+			plugOpts: { value: {
+				modeMarks: this.modeMarks,
+				// theme    : "iplastic",
+				// maxLines : 30,
+			}},
+
+			modeMarks : { value: {
+				batchfile  : "bat",
+				javascript : "js",
+				python     : "py",
+				text       : "txt",
+			}},
+
+		});
+
+
+
+	window.acePK = {
+		version,
+		default: _default_,
+		help,
+		plug,
+		retabulate,
+	};
+
+	return;
+
+	function help () {
+		const helpStr = [
 			"",
 			"'Data-options' has priority over options that passed in constructor.",
 			"options:",
@@ -30,51 +77,7 @@ class AcePK  {
 		return helpStr;
 	}
 
-	static get editorOpts () {
-		this._editorOpts = this._editorOpts ||  {
-			fontSize                 : 16,
-			enableBasicAutocompletion: true,
-			enableSnippets           : true,
-			enableLiveAutocompletion : false,
-
-			enableEmmet              : true,
-			wrap                     : true,
-
-			highlightActiveLine      : false,
-
-			showPrintMargin          : false,
-			useSoftTabs              : false,
-			autoScrollEditorIntoView : true,
-			maxLines                 : 30,
-
-			showInvisibles           : true,
-			theme                    : "ace/theme/kuroir",
-		};
-		return this._editorOpts;
-	}
-
-	static get setOpts () {
-		this._setOpts = this._setOpts || {
-			modeMarks: this.modeMarks,
-			// theme    : "iplastic",
-			// maxLines : 30,
-		};
-
-		return this._setOpts;
-	}
-
-	static get modeMarks () {
-		this._modeMarks = this._modeMarks || {
-			batchfile  : "bat",
-			javascript : "js",
-			python     : "py",
-			text       : "txt",
-		};
-
-		return this._modeMarks;
-	}
-
-	static plug (el, setOpts={}, editorOpts={}) {
+	function plug (el, plugOpts={}, editorOpts={}) {
 
 		el.dataset.plugAceVersion = this.version;
 
@@ -83,13 +86,13 @@ class AcePK  {
 			ds = el.dataset,
 			o = Object.assign(
 				{},
-				this.setOpts,
-				setOpts,
+				_default_.plugOpts,
+				plugOpts,
 				ds,
 			),
 			edO = Object.assign(
 				{},
-				this.editorOpts,
+				_default_.editorOpts,
 				editorOpts,
 			);
 		o.maxLines = parseInt(o.maxLines);
@@ -97,7 +100,12 @@ class AcePK  {
 			fNameHtml = "",
 			creator  = document.createElement("div");
 
-		Object.assign(o.modeMarks, setOpts.modeMarks || {});
+		o.modeMarks = Object.assign(
+			{}, 
+			_default_.modeMarks, 
+			plugOpts.modeMarks || {}
+		);
+
 		o.mode = getMode(o.syntax, o) || o.mode;
 
 		if (o.fName)
@@ -107,7 +115,7 @@ class AcePK  {
 				</div>
 			`;
 
-		const wrapper = o.wrapper = this.eHTML(`
+		const wrapper = o.wrapper = eHTML(`
 			<div class="ace-plug-kit__code-wrapper">
 				<div class="ace-plug-kit__code-header">
 					<div class="ace-plug-kit__file-name-wr">${fNameHtml}</div>
@@ -120,15 +128,13 @@ class AcePK  {
 		wrapper.appendChild(el); 
 		el.classList.add("ace-plug-kit__code-element");
 
-		this.setStyle();
+		_setStyle();
 
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
-		this._setEditor(editor, el, wrapper, o, edO);
+		_setEditor(editor, el, wrapper, o, edO);
 
-		el.defaultPlugOptions = Object.assign({}, this.setOpts);
-		el.fCallPlugOptions   = setOpts;
-		el.currentPlugOptions = o;
+		window.editor = editor;
 
 		return editor;
 
@@ -140,25 +146,25 @@ class AcePK  {
 		}
 	}
 
-	static _setEditor (editor, el, wrapper, o, edO) {
-		const self = this;
+
+	function _setEditor (editor, el, wrapper, o, edO) {
 
 		wrapper.querySelector(".ace-plug-kit__syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
 		editor.setOption = 
-			this._decor(null, editor.setOption, afterOptionsDecor, 
+			_decor(null, editor.setOption, afterOptionsDecor, 
 				"editor.setOption()"); // Задекорировать editor.setOption
 
 		editor.session.setOption = 
-			this._decor(null, editor.session.setOption, afterOptionsDecor, 
+			_decor(null, editor.session.setOption, afterOptionsDecor, 
 				"editor.session.setOption()"); // Задекорировать editor.session.setOption
 
 		editor.renderer.setOption = 
-			this._decor(null, editor.renderer.setOption, afterOptionsDecor, 
+			_decor(null, editor.renderer.setOption, afterOptionsDecor, 
 				"editor.renderer.setOption()"); // Задекорировать editor.renderer.setOption
 
 		editor.renderer.setTheme = 
-			this._decor(beforeThemeDecor, editor.renderer.setTheme, null, 
+			_decor(beforeThemeDecor, editor.renderer.setTheme, null, 
 				"editor.renderer.setTheme()"); // Задекорировать editor.renderer.setTheme
 
 		editor.commands.addCommand({
@@ -194,7 +200,7 @@ class AcePK  {
 		editor.session.on("changeMode", (e) => {
 			var modeId = editor.session.getMode().$id;
 			o.mode = modeId.split("/").pop();
-			this._setSyntaxMark (o);
+			_setSyntaxMark (o);
 		}); // Показать на панели тип синтаксиса при его смене.
 
 		if (o.maxLines)
@@ -204,10 +210,10 @@ class AcePK  {
 			editor.session.setMode("ace/mode/"+o.mode);
 
 		if (o.url) 
-			this._loadCode(o.url, o);
+			_loadCode(o.url, o);
 
 		o.mode = o.editor.session.getMode().$id.split("/").pop();
-		this._setSyntaxMark (o) // Для инициализации.
+		_setSyntaxMark (o) // Для инициализации.
 
 		return;
 
@@ -223,7 +229,7 @@ class AcePK  {
 			// Вторым аргументом `args[1]` передаётся каллбек, который исполнится 
 			// после изменения темы. Его нужно задекорировать функцией, которая 
 			// пересветит метку синтаксиса.
-			args[1] = self._decor(null, (args[1] || function() {}), () => {
+			args[1] = _decor(null, (args[1] || function() {}), () => {
 				setTimeout(() => {
 					const cS = getComputedStyle(el);
 
@@ -248,7 +254,7 @@ class AcePK  {
 		}
 	}
 
-	static retabulate (el, defIndent=0, tabChar="\t") {
+	function retabulate (el, defIndent=0, tabChar="\t") {
 		var 
 			str = el.textContent,
 			newStr = "",
@@ -305,7 +311,7 @@ class AcePK  {
 		}
 	}
 
-	static _loadCode (url, o) {
+	function _loadCode (url, o) {
 		var 
 			self = this,
 			xhr = new XMLHttpRequest();
@@ -327,7 +333,7 @@ class AcePK  {
 		return true;
 	}
 
-	static _decor (before, fn, after, logMark=null) {
+	function _decor (before, fn, after, logMark=null) {
 		return function(...args) {
 			// console.log(logMark);
 			const self = this;
@@ -341,7 +347,7 @@ class AcePK  {
 		}
 	}
 
-	static _setModeByPathname (pathname, o) {
+	function _setModeByPathname (pathname, o) {
 		ace.config.loadModule('ace/ext/modelist', (module) => {
 			var 
 				modelist  = ace.require("ace/ext/modelist"),
@@ -354,11 +360,11 @@ class AcePK  {
 		}); // Установить тип загружаемого файла, если файл загружается.
 	}
 
-	static _setSyntaxMark (o) {
+	function _setSyntaxMark (o) {
 		o.wrapper.querySelector(".ace-plug-kit__syntax-mark")
 				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
 	}
-	static eHTML (code, shell=null) {
+	function eHTML (code, shell=null) {
 		const _shell = 
 			! shell                  ? document.createElement("div") :
 			typeof shell == "string" ? document.createElement(shell) :
@@ -368,7 +374,7 @@ class AcePK  {
 		return _shell.children[0];
 	}
 
-	static setStyle () {
+	function _setStyle () {
 		const 
 			cssCode = `
 				.ace-plug-kit__code-wrapper {
@@ -412,7 +418,7 @@ class AcePK  {
 		);
 
 		if (! styleAlreadyExists) {
-			const style = this.eHTML(`<style class="${styleClassName}"></style>`);
+			const style = eHTML(`<style class="${styleClassName}"></style>`);
 			style.textContent = cssCode;
 			const firstEl = document.head.children[0];
 			if (firstEl)
@@ -421,5 +427,6 @@ class AcePK  {
 				document.head.appendChild(style);
 		}
 	}
-}
+
+})()
 
