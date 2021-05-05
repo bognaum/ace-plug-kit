@@ -1,0 +1,73 @@
+AcePK v5.0.0
+<!-- -------------------------------------------------- -->
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-language_tools.js"></script>
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-emmet.js"></script>
+	<script type="text/javascript" src="./ace-plug-kit/Ace-Emmet/emmet.js"></script>
+	<script type="text/javascript" src="./ace-plug-kit/ace-plug-kit.js"></script>
+
+<!-- -------------------------------------------------- -->
+
+<div class="ace-plug-js">
+	console.lpg("OK");
+</div>
+
+<!-- -------------------------------------------------- -->
+
+<script type="text/javascript">
+	!function() {
+		document.querySelectorAll(".ace-plug").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30});
+		});
+		document.querySelectorAll(".ace-plug-file").forEach((v) => {
+			PlugAce.plug(v, {maxLines: 30});
+		});
+		document.querySelectorAll(".ace-plug-js").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, 
+				{
+					maxLines: 30,
+					syntax: "javascript", 
+					syntaxMark: "js",
+				});
+		});
+		document.querySelectorAll(".ace-plug-html").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30, syntax: "html"});
+		});
+		document.querySelectorAll(".ace-plug-php").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30, syntax: "php"});
+		});
+		document.querySelectorAll(".ace-plug-css").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30, syntax: "css"});
+		});
+		document.querySelectorAll(".ace-plug-scss").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30, syntax: "scss"});
+		});
+		document.querySelectorAll(".ace-plug-py").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, 
+				{
+					maxLines: 30,
+					syntax: "python", 
+					syntaxMark: "py",
+				});
+		});
+		document.querySelectorAll(".ace-plug-text").forEach((v) => {
+			PlugAce.retabulate(v);
+			PlugAce.plug(v, {maxLines: 30, syntax: "text"});
+		});
+	}();
+</script>
+
+
+<!-- -------------------------------------------------- -->
+
+<!-- -------------------------------------------------- -->
+<!-- -------------------------------------------------- -->
+
+

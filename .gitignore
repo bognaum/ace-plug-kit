@@ -1,5 +1,5 @@
 # .gitignore 
-/templates.html
+# /templates.html
 
 Ace-Emmet/
 get_file_code.php
