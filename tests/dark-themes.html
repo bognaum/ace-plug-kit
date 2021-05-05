@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-language_tools.js"></script>
+	<script type="text/javascript" src="https://pagecdn.io/lib/ace/1.4.12/ext-emmet.js"></script>
+	<script type="text/javascript" src="./../Ace-Emmet/emmet.js"></script>
+	<script type="text/javascript" src="./../ace-plug-kit.js"></script>
+	<!-- <link rel="stylesheet" href="./../ace-plug-kit.css"> -->
+
+	<style>
+		body>.container {
+			margin: 20px 100px 500px 100px;
+		}
+		body {
+			font-family: verdana, arial, sans-serif;
+			color: #333;
+		}
+	</style>
+	<title>Dark themes</title>
+</head>
+<body>
+	<div class="container"></div>
+	<script type="text/javascript">
+		!function() {
+			acePK.getThemes()
+				.then((themes) => {
+					themes.dark.forEach((v) => {
+						const 
+							el = eHTML(`
+								<div>
+									<h3>${v}</h3>
+									<div class="edited"></div>
+									<br>
+								</div>
+							`),
+							edited = el.querySelector(".edited"),
+							editor = acePK.plug(edited, {syntax: "javascript", theme: v});
+						document.querySelector(".container").append(el);
+						fetch("./../ace-plug-kit.js")
+							.then(dt => dt.text())
+							.then(text => {
+								editor.setValue(text);
+								editor.selection.moveCursorFileStart();
+							});
+					});
+				});
+		}();
+
+		function eHTML (code, shell=null) {
+			const _shell = 
+				! shell                  ? document.createElement("div") :
+				typeof shell == "string" ? document.createElement(shell) :
+				typeof shell == "object" ? shell :
+					null;
+			_shell.innerHTML = code;
+			return _shell.children[0];
+		}
+	</script>
+</body>
+</html>
