@@ -72,7 +72,7 @@ class AcePlug  {
 			creator  = document.createElement("div");
 
 		Object.assign(o.modeMarks, setOpts.modeMarks || {});
-		o.mode = getMode(o.syntax) || o.mode;
+		o.mode = getMode(o.syntax, o) || o.mode;
 
 		if (o.fName)
 			fNameHtml = `
@@ -106,7 +106,7 @@ class AcePlug  {
 
 		return editor;
 
-		function getMode(syntaxMark="". o) {
+		function getMode(syntaxMark="", o) {
 			for (var i in o.modeMarks) 
 				if (o.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
 					return i;
