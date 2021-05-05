@@ -14,60 +14,46 @@ AcePK v5.0.0
 
 <!-- -------------------------------------------------- -->
 
+<div class="ace-plug-html" data-f-name="hello.html">
+	&lt;h1&gt;Hello&lt;/h1&gt;
+</div>
+
+<!-- -------------------------------------------------- -->
+
 <script type="text/javascript">
+	// place at the bottom of the page
 	!function() {
-		document.querySelectorAll(".ace-plug").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30});
-		});
-		document.querySelectorAll(".ace-plug-file").forEach((v) => {
-			PlugAce.plug(v, {maxLines: 30});
-		});
 		document.querySelectorAll(".ace-plug-js").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, 
-				{
-					maxLines: 30,
-					syntax: "javascript", 
-					syntaxMark: "js",
-				});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "javascript", });
 		});
 		document.querySelectorAll(".ace-plug-html").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30, syntax: "html"});
-		});
-		document.querySelectorAll(".ace-plug-php").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30, syntax: "php"});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "html"});
 		});
 		document.querySelectorAll(".ace-plug-css").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30, syntax: "css"});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "css"});
 		});
 		document.querySelectorAll(".ace-plug-scss").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30, syntax: "scss"});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "scss"});
+		});
+		document.querySelectorAll(".ace-plug-json").forEach((v) => {
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "json", });
+		});
+		document.querySelectorAll(".ace-plug-php").forEach((v) => {
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "php"});
 		});
 		document.querySelectorAll(".ace-plug-py").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, 
-				{
-					maxLines: 30,
-					syntax: "python", 
-					syntaxMark: "py",
-				});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "python",});
 		});
 		document.querySelectorAll(".ace-plug-text").forEach((v) => {
-			PlugAce.retabulate(v);
-			PlugAce.plug(v, {maxLines: 30, syntax: "text"});
+			AcePK.retabulate(v);
+			AcePK.plug(v, {syntax: "text"});
 		});
 	}();
 </script>
-
-
-<!-- -------------------------------------------------- -->
-
-<!-- -------------------------------------------------- -->
-<!-- -------------------------------------------------- -->
-
-

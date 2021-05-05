@@ -39,13 +39,6 @@
 	</div>
 	<script type="text/javascript">
 		!function() {
-			document.querySelectorAll(".ace-plug").forEach((v) => {
-				AcePK.retabulate(v);
-				AcePK.plug(v);
-			});
-			document.querySelectorAll(".ace-plug-file").forEach((v) => {
-				AcePK.plug(v);
-			});
 			document.querySelectorAll(".ace-plug-js").forEach((v) => {
 				AcePK.retabulate(v);
 				AcePK.plug(v, {syntax: "javascript", });
@@ -54,10 +47,6 @@
 				AcePK.retabulate(v);
 				AcePK.plug(v, {syntax: "html"});
 			});
-			document.querySelectorAll(".ace-plug-php").forEach((v) => {
-				AcePK.retabulate(v);
-				AcePK.plug(v, {syntax: "php"});
-			});
 			document.querySelectorAll(".ace-plug-css").forEach((v) => {
 				AcePK.retabulate(v);
 				AcePK.plug(v, {syntax: "css"});
@@ -65,6 +54,14 @@
 			document.querySelectorAll(".ace-plug-scss").forEach((v) => {
 				AcePK.retabulate(v);
 				AcePK.plug(v, {syntax: "scss"});
+			});
+			document.querySelectorAll(".ace-plug-json").forEach((v) => {
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "json", });
+			});
+			document.querySelectorAll(".ace-plug-php").forEach((v) => {
+				AcePK.retabulate(v);
+				AcePK.plug(v, {syntax: "php"});
 			});
 			document.querySelectorAll(".ace-plug-py").forEach((v) => {
 				AcePK.retabulate(v);
