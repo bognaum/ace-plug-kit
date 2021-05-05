@@ -1,7 +1,7 @@
 class AcePK  {
 
 	static get version () {
-		return "4.1.0";
+		return "5.0.0";
 	}
 
 	static help () {
