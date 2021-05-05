@@ -4,6 +4,32 @@ class AcePK  {
 		return "4.1.0";
 	}
 
+	static help () {
+		var helpStr = [
+			"",
+			"'Data-options' has priority over options that passed in constructor.",
+			"options:",
+			"        mode - the syntax to Ace editor. Setts in the ace canonical names.",
+			"      syntax - the syntax to Ace editor. Setts in a short aliases. Has priority over 'mode'.",
+			"  syntaxMark - setts the mark of syntax name to this mode to this editor.",
+			"       theme - theme to Ace editor.",
+			"    maxLines - maximal count of lines. Default: infinity",
+			"        ",
+			"data-",
+			"         mode - ---",
+			"       syntax - ---",
+			"  syntax-mark - ---",
+			"        theme - ---",
+			"    max-lines - ---",
+			"       f-name - Caption with name or path/name of file or other.",
+			"          url - loaded content from setted url. ",
+			"                    If 'mode' is not setted and if server sent 'Downloaded-file-pathname' header",
+			"                     mode would be settled from extension of pathname from this header.",
+			"",
+		].join("\n");
+		return helpStr;
+	}
+
 	static get editorOpts () {
 		this._editorOpts = this._editorOpts ||  {
 			fontSize                 : 16,
@@ -278,32 +304,6 @@ class AcePK  {
 
 			return str;
 		}
-	}
-
-	static help () {
-		var helpStr = [
-			"",
-			"'Data-options' has priority over options that passed in constructor.",
-			"options:",
-			"        mode - the syntax to Ace editor. Setts in the ace canonical names.",
-			"      syntax - the syntax to Ace editor. Setts in a short aliases. Has priority over 'mode'.",
-			"  syntaxMark - setts the mark of syntax name to this mode to this editor.",
-			"       theme - theme to Ace editor.",
-			"    maxLines - maximal count of lines. Default: infinity",
-			"        ",
-			"data-",
-			"         mode - ---",
-			"       syntax - ---",
-			"  syntax-mark - ---",
-			"        theme - ---",
-			"    max-lines - ---",
-			"       f-name - Caption with name or path/name of file or other.",
-			"          url - loaded content from setted url. ",
-			"                    If 'mode' is not setted and if server sent 'Downloaded-file-pathname' header",
-			"                     mode would be settled from extension of pathname from this header.",
-			"",
-		].join("\n");
-		return helpStr;
 	}
 
 	static _loadCode (url, o) {
