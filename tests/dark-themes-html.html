@@ -37,15 +37,13 @@
 									<br>
 								</div>
 							`),
-							edited = el.querySelector(".edited"),
-							editor = acePK.plug(edited, {syntax: "javascript", theme: v});
+							edited = el.querySelector(".edited");
 						document.querySelector(".container").append(el);
-						fetch(location.href)
-							.then(dt => dt.text())
-							.then(text => {
-								editor.setValue(text);
-								editor.selection.moveCursorFileStart();
-							});
+						acePK.plug(edited, {
+							url: location.href, 
+							syntax: "javascript", 
+							theme: v
+						});
 					});
 				});
 		}();
