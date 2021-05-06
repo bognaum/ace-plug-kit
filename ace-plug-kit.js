@@ -317,6 +317,7 @@
 
 	function _loadCode (url, o) {
 		var 
+			urlOb = new URL(url, location.href),
 			self = this,
 			xhr = new XMLHttpRequest();
 		xhr.open('GET', url, true);
@@ -331,7 +332,7 @@
 			o.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
 			o.editor.session.setValue(xhr.responseText);
 			if (!o.syntax)
-				_setModeByPathname(o.syntax || pathname || url, o);
+				_setModeByPathname(o.syntax || pathname || urlOb.pathname, o);
 		} // Асинхронно.
 
 		return true;
