@@ -60,14 +60,12 @@
 			"",
 			"'Data-options' has priority over options that passed in constructor.",
 			"options:",
-			"        mode - the syntax to Ace editor. Setts in the ace canonical names.",
-			"      syntax - the syntax to Ace editor. Setts in a short aliases. Has priority over 'mode'.",
+			"      syntax - the syntax to Ace editor. Supported short aliases.",
 			"  syntaxMark - setts the mark of syntax name to this mode to this editor.",
 			"       theme - theme to Ace editor.",
 			"    maxLines - maximal count of lines. Default: infinity",
 			"        ",
 			"data-",
-			"         mode - ---",
 			"       syntax - ---",
 			"  syntax-mark - ---",
 			"        theme - ---",
@@ -94,7 +92,7 @@
 				plugOpts,
 				ds,
 			),
-			edO = Object.assign(
+			edOpts = Object.assign(
 				{},
 				_default_.editorOpts,
 				editorOpts,
@@ -109,8 +107,6 @@
 			_default_.modeMarks, 
 			plugOpts.modeMarks || {}
 		);
-
-		o.mode = getMode(o.syntax, o) || o.mode;
 
 		if (o.fName)
 			fNameHtml = `
@@ -136,22 +132,15 @@
 
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
 
-		_setEditor(editor, el, wrapper, o, edO);
+		_setEditor(editor, el, wrapper, o, edOpts);
 
 		window.editor = editor;
 
 		return editor;
-
-		function getMode(syntaxMark="", o) {
-			for (var i in o.modeMarks) 
-				if (o.modeMarks[i].toLowerCase() == syntaxMark.toLowerCase()) 
-					return i;
-			return syntaxMark;
-		}
 	}
 
 
-	function _setEditor (editor, el, wrapper, o, edO) {
+	function _setEditor (editor, el, wrapper, o, edOpts) {
 
 		wrapper.querySelector(".ace-plug-kit__syntax-mark").onclick = () => {editor.showSettingsMenu()};
 
@@ -194,30 +183,30 @@
 			readOnly: true,
 		}]); // Добавить меню настроек
 
-
-
-
-		editor.setOptions(edO); // Настройки.
-
-		editor.setTheme(o.theme ? `ace/theme/${o.theme}` : editor.getTheme());
-
 		editor.session.on("changeMode", (e) => {
 			var modeId = editor.session.getMode().$id;
-			o.mode = modeId.split("/").pop();
+			// o.mode = modeId.split("/").pop();
 			_setSyntaxMark (o);
 		}); // Показать на панели тип синтаксиса при его смене.
+
+		_setSyntaxMark (o) // Для инициализации.
+
+		editor.setOptions(edOpts); // Настройки.
 
 		if (o.maxLines)
 			editor.setOption("maxLines", o.maxLines * 1); // Максимальное количество строк
 
-		if (o.mode) 
-			editor.session.setMode("ace/mode/"+o.mode);
+		if (o.theme)
+			editor.setTheme(`ace/theme/${o.theme}`);
 
 		if (o.url) 
 			_loadCode(o.url, o);
 
-		o.mode = o.editor.session.getMode().$id.split("/").pop();
-		_setSyntaxMark (o) // Для инициализации.
+		if (o.syntax) {
+			const mode = _getModeFromSyntax(o.syntax, o);
+			if (mode) 
+				editor.session.setMode("ace/mode/"+mode);
+		}
 
 		return;
 
@@ -331,8 +320,9 @@
 			var pathname = xhr.getResponseHeader("Downloaded-file-pathname");
 			o.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
 			o.editor.session.setValue(xhr.responseText);
-			if (!o.syntax)
-				_setModeByPathname(o.syntax || pathname || urlOb.pathname, o);
+			if (! o.syntax)
+				_setModeByPathname(pathname || urlOb.pathname, o);
+
 		} // Асинхронно.
 
 		return true;
@@ -359,15 +349,20 @@
 				foundMode = modelist.getModeForPath(pathname).mode,
 				modeName  = foundMode.split("/").pop();
 			o.editor.session.setMode(foundMode);
-			o.mode = modeName;
 			if (o.syntaxMark)
 				o.modeMarks[modeName] = o.syntaxMark;
 		}); // Установить тип загружаемого файла, если файл загружается.
 	}
 
 	function _setSyntaxMark (o) {
+		const mode = o.editor.session.getMode().$id.split("/").slice(-1);
 		o.wrapper.querySelector(".ace-plug-kit__syntax-mark")
-				.textContent = o.syntaxMark || o.modeMarks[o.mode] || o.mode;
+				.textContent = o.syntaxMark || o.modeMarks[mode] || mode;
+	}
+
+	function _getModeFromSyntax (syntaxMark, o) {
+		const ob = o.modeMarks;
+		return Object.keys(ob).find(v => ob[v] == syntaxMark) || syntaxMark;
 	}
 
 	function eHTML (code, shell=null) {
