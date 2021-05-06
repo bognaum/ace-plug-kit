@@ -1,6 +1,6 @@
 (function () {
 	const 
-		version = "6.1.0",
+		version = "7.0.0",
 
 		_default_ = Object.defineProperties({}, {
 
@@ -81,7 +81,7 @@
 
 	function plug (el, plugOpts={}, editorOpts={}) {
 
-		el.dataset.plugAceVersion = this.version;
+		el.dataset.acePlugKitVersion = this.version;
 
 		const 
 			self = this,
