@@ -330,8 +330,8 @@
 			var pathname = xhr.getResponseHeader("Downloaded-file-pathname");
 			o.editor.$blockScrolling = Infinity; // Чтобы отменить какое-то непонятное сообщение в консоли
 			o.editor.session.setValue(xhr.responseText);
-			if (!o.mode)
-				self._setModeByPathname(o.mode || pathname || url, o);
+			if (!o.syntax)
+				_setModeByPathname(o.syntax || pathname || url, o);
 		} // Асинхронно.
 
 		return true;
