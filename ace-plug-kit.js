@@ -208,6 +208,9 @@
 				editor.session.setMode("ace/mode/"+mode);
 		}
 
+		if (o.selLines)
+			_selectLines(editor, o.selLines);
+
 		return;
 
 		function afterOptionsDecor(result, ...args) {
@@ -304,6 +307,32 @@
 		}
 	}
 
+	function _selectLines(editor, nums) {
+		try {
+			const ranges = [];
+			nums.split(",").forEach((v) => {
+				let [a, b] = v.split("-").map(v => parseInt(v));
+				b ||= a;
+				if (a) {
+					for (let i = a; i <= b; i ++) {
+						editor.selection.setSelectionRange(
+							new ace.Range(i - 1, 0, i - 1, 0));
+						editor.selection.moveCursorLineStart();
+						editor.selection.selectLineEnd();
+						ranges.push(editor.selection.getRange());
+					}
+				}
+			});
+			ranges.push(new ace.Range(0,0,0,0));
+			ranges.forEach((v) => {
+				if (v)
+					v.cursor = v.start, editor.selection.addRange(v);
+			});
+		} catch (err) {
+			console.error("(!)", el, err);
+		}
+	}
+
 	function _loadCode (url, o) {
 		var 
 			urlOb = new URL(url, location.href),
@@ -322,6 +351,8 @@
 			o.editor.session.setValue(xhr.responseText);
 			if (! o.syntax)
 				_setModeByPathname(pathname || urlOb.pathname, o);
+			if (o.selLines)
+				_selectLines(editor, o.selLines);
 
 		} // Асинхронно.
 
