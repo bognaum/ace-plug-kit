@@ -108,34 +108,10 @@
 			plugOpts.modeMarks || {}
 		);
 
-		if (o.fName)
-			fNameHtml = `
-				<div class="ace-plug-kit__f-name-tr">
-					<div class="ace-plug-kit__f-name-block-el">${o.fName}</div>
-				</div>
-			`;
-
-		const wrapper = o.wrapper = eHTML(`
-			<div class="ace-plug-kit__code-wrapper">
-				<div class="ace-plug-kit__code-header">
-					<div class="ace-plug-kit__file-name-wr">${fNameHtml}</div>
-					<div class="ace-plug-kit__syntax-mark">${""}</div>
-				</div>
-			</div>
-		`);
-
-		el.parentElement.insertBefore(wrapper, el);
-		wrapper.appendChild(el); 
-		el.classList.add("ace-plug-kit__code-element");
-
+		_performEditEl(el, o);
 		_setStyle();
-
 		const editor = el.editor = o.editor = ace.edit(el); // Создали редактор
-
-		_setEditor(editor, el, wrapper, o, edOpts);
-
-		window.editor = editor;
-
+		_setEditor(editor, el, o.wrapper, o, edOpts);
 		return editor;
 	}
 
@@ -307,6 +283,28 @@
 		}
 	}
 
+	function _performEditEl(el, o) {
+		if (o.fName)
+			fNameHtml = `
+				<div class="ace-plug-kit__f-name-tr">
+					<div class="ace-plug-kit__f-name-block-el">${o.fName}</div>
+				</div>
+			`;
+
+		const wrapper = o.wrapper = eHTML(`
+			<div class="ace-plug-kit__code-wrapper">
+				<div class="ace-plug-kit__code-header">
+					<div class="ace-plug-kit__file-name-wr">${fNameHtml}</div>
+					<div class="ace-plug-kit__syntax-mark">${""}</div>
+				</div>
+			</div>
+		`);
+
+		el.parentElement.insertBefore(wrapper, el);
+		wrapper.appendChild(el); 
+		el.classList.add("ace-plug-kit__code-element");
+	}
+
 	function _selectLines(editor, nums) {
 		try {
 			const ranges = [];
@@ -352,7 +350,7 @@
 			if (! o.syntax)
 				_setModeByPathname(pathname || urlOb.pathname, o);
 			if (o.selLines)
-				_selectLines(editor, o.selLines);
+				_selectLines(o.editor, o.selLines);
 
 		} // Асинхронно.
 
