@@ -74,6 +74,7 @@
 			"          url - loaded content from setted url. ",
 			"                    If 'mode' is not setted and if server sent 'Downloaded-file-pathname' header",
 			"                     mode would be settled from extension of pathname from this header.",
+			"    sel-lines - select given lines. For example '3,5-7' selected lines 3,5,6,7.",
 			"",
 		].join("\n");
 		return helpStr;
