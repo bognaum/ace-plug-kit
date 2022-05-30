@@ -1,6 +1,6 @@
 (function () {
 	const 
-		version = "7.0.0",
+		version = "7.1.0",
 
 		_default_ = Object.defineProperties({}, {
 
